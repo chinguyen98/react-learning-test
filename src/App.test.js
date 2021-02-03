@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
 
 describe('Test App', () => {
@@ -18,11 +19,14 @@ describe('Test App', () => {
     expect(screen.queryByText(/Searches for JavaScript/)).toBeNull();
 
     screen.debug();
-    fireEvent.change(screen.getByRole('textbox'), {
-      target: { value: 'JavaScript' }
-    });
-    screen.debug();
+    // fireEvent.change(screen.getByRole('textbox'), {
+    //   target: { value: 'JavaScript' }
+    // });
 
-    expect(screen.queryByText(/Searches for JavaScript/)).toBeInTheDocument();
+    userEvent.type(screen.getByRole('textbox'), 'JavaScript')
+
+    expect(await screen.findByText(/Searches for JavaScript/)).toBeInTheDocument();
+    
+    screen.debug();
   })
 })
